@@ -8,7 +8,9 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.example.apiproject.retrofit.RetrofitManager
 import com.example.apiproject.utils.Constants.TAG
+import com.example.apiproject.utils.RESPONSE_STATE
 import com.example.apiproject.utils.SEARCH_TYPE
 import com.example.apiproject.utils.onMyTextChanged
 import kotlinx.android.synthetic.main.activity_main.*
@@ -68,6 +70,18 @@ class MainActivity : AppCompatActivity() {
         search_button.setOnClickListener {
             Log.d(TAG,"MainActivity - 검색 버튼 클릭")
 
+            RetrofitManager.instance.searchPhotos(searchTerm = search_term_edit_text.toString(), completion = {
+                responseState, responseBody ->
+
+                when(responseState) {
+                    RESPONSE_STATE.OKAY -> {
+
+                    }
+                    RESPONSE_STATE.FAIL -> {
+                        Toast.makeText(this, "api 호출 에러", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
             this.handleSearchButtonUi()
         }
     }
