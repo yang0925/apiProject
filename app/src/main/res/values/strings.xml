@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">apiProject</string>
+    <string name="search_term_hint">사진 검색</string>
+</resources>
