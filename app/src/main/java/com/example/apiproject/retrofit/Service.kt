@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface Service {
 
-    @GET(API.SEARCH_PHOTO)
+    @GET(API.SEARCH_PHOTOS)
     fun searchPhotos(
         @Query("query") searchTerm: String
     ): Call<JsonElement>
