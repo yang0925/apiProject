@@ -147,10 +147,5 @@ class MainActivity : AppCompatActivity() {
 
         search_button.text = ""
 
-//        Handler().postDelayed({
-//            btn_progress.visibility = View.INVISIBLE
-//            btn_search.text = "검색"
-//        }, 1500)
-
     }
 }

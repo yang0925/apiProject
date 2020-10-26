@@ -23,8 +23,6 @@ object RetrofitClient {
         // 레트로핏 클라이언트 선언
         private var retrofitClient: Retrofit? = null
 
-
-
         // 레트로핏 클라이언트 가져오기
         fun getClient(baseUrl: String): Retrofit? {
 
@@ -85,13 +83,9 @@ object RetrofitClient {
                         Handler(Looper.getMainLooper()).post {
                             Toast.makeText(App.instance, "${response.code} 에러 입니다.", Toast.LENGTH_SHORT).show()
                         }
-
                     }
-
                     return response
-
                 }
-
             })
 
 
@@ -114,12 +108,8 @@ object RetrofitClient {
 
                     // 위에서 설정한 클라이언트로 레트로핏 클라이언트를 설정한다.
                     .client(client.build())
-
                     .build()
             }
-
             return retrofitClient
         }
-
-
     }
