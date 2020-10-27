@@ -23,8 +23,15 @@ import com.example.apiproject.recyclerview.SearchHistoryRecyclerViewAdapter
 import com.example.apiproject.retrofit.RetrofitManager
 import com.example.apiproject.utils.SharedPrefManager
 import com.example.apiproject.utils.toSimpleString
+import com.jakewharton.rxbinding4.widget.textChanges
+import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.kotlin.subscribeBy
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_photo_collection.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 
@@ -47,13 +54,13 @@ class PhotoCollectionActivity: AppCompatActivity(),
     private lateinit var photoGridRecyeclerViewAdapter: PhotoGridRecyclerViewAdapter
     private lateinit var mySearchHistoryRecyclerViewAdapter: SearchHistoryRecyclerViewAdapter
 
-
     // 서치뷰
     private lateinit var mySearchView: SearchView
 
     // 서치뷰 에딧 텍스트
     private lateinit var mySearchViewEditText: EditText
 
+    private var myCompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,6 +108,11 @@ class PhotoCollectionActivity: AppCompatActivity(),
 
 
     } //
+
+    override fun onDestroy() {
+        this.myCompositeDisposable.clear()
+        super.onDestroy()
+    }
 
     // 검색 기록 리사이클러뷰 준비
     private fun searchHistoryRecyclerViewSetting(searchHistoryList: ArrayList<SearchData>){
@@ -153,7 +165,7 @@ class PhotoCollectionActivity: AppCompatActivity(),
             this.setOnQueryTextFocusChangeListener { _, hasExpaned ->
                 when(hasExpaned) {
                     true -> {
-                        linear_search_history_view.visibility = View.VISIBLE
+                        // linear_search_history_view.visibility = View.VISIBLE
 
                         handleSearchViewUi()
                     }
@@ -165,6 +177,26 @@ class PhotoCollectionActivity: AppCompatActivity(),
 
             // 서치뷰에서 에딧텍스트를 가져온다.
             mySearchViewEditText = this.findViewById(androidx.appcompat.R.id.search_src_text)
+
+            val editTextChangeObservable = mySearchViewEditText.textChanges()
+            val searchEditTextSubscription : Disposable =
+                editTextChangeObservable
+                    .debounce(800,TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.io())
+                    .subscribeBy(
+                        onNext = {
+                            if(it.isNotEmpty()) {
+                                searchPhotoApiCall(it.toString())
+                            }
+                        },
+                        onComplete = {
+
+                        },
+                        onError = {
+
+                        }
+                    )
+            myCompositeDisposable.add(searchEditTextSubscription)
         }
 
 
@@ -173,7 +205,6 @@ class PhotoCollectionActivity: AppCompatActivity(),
             this.setTextColor(Color.WHITE)
             this.setHintTextColor(Color.WHITE)
         }
-
 
         return true
     }
@@ -206,6 +237,10 @@ class PhotoCollectionActivity: AppCompatActivity(),
         if(userInputText.count() == 12){
             Toast.makeText(this, "검색어는 12자 까지만 입력 가능합니다.", Toast.LENGTH_SHORT).show()
         }
+
+        //if(userInputText.length in 1..12) {
+        //    searchPhotoApiCall(userInputText)
+        //}
 
         return true
     }
