@@ -1,12 +1,11 @@
 package com.example.apiproject.retrofit
 
-import android.util.Log
+
+import android.provider.Telephony.BaseMmsColumns.RESPONSE_STATUS
 import com.example.apiproject.model.Photo
 import com.google.gson.JsonElement
 import com.example.apiproject.utils.API
-import com.example.apiproject.utils.Constants.TAG
-import com.example.apiproject.utils.RESPONSE_STATE
-import okhttp3.internal.http2.Header.Companion.RESPONSE_STATUS
+import com.example.apiproject.utils.RESPONSE_STATUS
 import retrofit2.Call
 import retrofit2.Response
 import java.text.SimpleDateFormat
@@ -22,7 +21,7 @@ class RetrofitManager {
 
 
     // 사진 검색 api 호출
-    fun searchPhotos(searchTerm: String?, completion: (RESPONSE_STATE, ArrayList<Photo>?) -> Unit){
+    fun searchPhotos(searchTerm: String?, completion: (RESPONSE_STATUS, ArrayList<Photo>?) -> Unit){
 
         val term = searchTerm.let {
             it
@@ -36,7 +35,7 @@ class RetrofitManager {
 
             // 응답 실패시
             override fun onFailure(call: Call<JsonElement>, t: Throwable) {
-                completion(RESPONSE_STATE.FAIL, null)
+                completion(com.example.apiproject.utils.RESPONSE_STATUS.FAIL, null)
             }
 
             // 응답 성공시
@@ -58,7 +57,7 @@ class RetrofitManager {
 
                             // 데이터가 없으면 no_content 로 보낸다.
                             if(total == 0) {
-                                completion(RESPONSE_STATE.NO_CONTENT, null)
+                                completion(com.example.apiproject.utils.RESPONSE_STATUS.NO_CONTENT, null)
 
                             } else { // 데이터가 있다면
 
@@ -84,7 +83,7 @@ class RetrofitManager {
 
                                 }
 
-                                completion(RESPONSE_STATE.OKAY, parsedPhotoDataArray)
+                                completion(com.example.apiproject.utils.RESPONSE_STATUS.OKAY, parsedPhotoDataArray)
                             }
                         }
                     }

@@ -3,6 +3,8 @@ package com.example.apiproject.utils
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import java.text.SimpleDateFormat
+import java.util.*
 
 //문자열이 Json형태인지
 fun String?.isJsonObject():Boolean {
@@ -14,6 +16,10 @@ fun String?.isJsonArray(): Boolean {
     return this?.startsWith("[") == true && this.endsWith("]")
 }
 
+fun Date.toSimpleString(): String {
+    val format = SimpleDateFormat("HH:mm:ss")
+    return format.format(this)
+}
 //editText
 fun EditText.onMyTextChanged(completion: (Editable?)-> Unit) {
     this.addTextChangedListener(object : TextWatcher {

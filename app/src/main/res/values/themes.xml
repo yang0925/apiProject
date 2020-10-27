@@ -14,12 +14,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
     
     <style name="MyRadioButton" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
         <item name="colorControlNormal">@color/colorLightGray</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
-        <item name="colorControlHighlight">@color/colorLightPink</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
     
     <style name="MySwitchButton" parent="">

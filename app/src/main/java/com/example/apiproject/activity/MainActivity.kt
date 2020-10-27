@@ -9,7 +9,7 @@ import android.widget.Toast
 import com.example.apiproject.R
 import com.example.apiproject.retrofit.RetrofitManager
 import com.example.apiproject.utils.Constants.TAG
-import com.example.apiproject.utils.RESPONSE_STATE
+import com.example.apiproject.utils.RESPONSE_STATUS
 import com.example.apiproject.utils.SEARCH_TYPE
 import com.example.apiproject.utils.onMyTextChanged
 import kotlinx.android.synthetic.main.activity_main.*
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                 completion = { responseState, responseDataArrayList ->
 
                     when (responseState) {
-                        RESPONSE_STATE.OKAY -> {
+                        RESPONSE_STATUS.OKAY -> {
                             Log.d(TAG, "api 호출 성공 : ${responseDataArrayList?.size}")
 
                             val intent = Intent(this, PhotoCollectionActivity::class.java)
@@ -114,12 +114,12 @@ class MainActivity : AppCompatActivity() {
                             startActivity(intent)
 
                         }
-                        RESPONSE_STATE.FAIL -> {
+                        RESPONSE_STATUS.FAIL -> {
                             Toast.makeText(this, "api 호출 에러입니다.", Toast.LENGTH_SHORT).show()
                             Log.d(TAG, "api 호출 실패 : $responseDataArrayList")
                         }
 
-                        RESPONSE_STATE.NO_CONTENT -> {
+                        RESPONSE_STATUS.NO_CONTENT -> {
                             Toast.makeText(this, "검색결과가 없습니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
