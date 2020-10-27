@@ -1,4 +1,4 @@
-package com.example.apiproject
+package com.example.apiproject.activity
 
 import android.app.SearchManager
 import android.content.Context
@@ -13,10 +13,15 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.apiproject.R
 import com.example.apiproject.model.Photo
+import com.example.apiproject.model.SearchData
 import com.example.apiproject.recyclerview.PhotoGridRecyclerViewAdapter
+import com.example.apiproject.utils.SharedPrefManager
 
 import kotlinx.android.synthetic.main.activity_photo_collection.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class PhotoCollectionActivity: AppCompatActivity(),
@@ -28,6 +33,9 @@ class PhotoCollectionActivity: AppCompatActivity(),
 
     // 데이터
     private var photoList = ArrayList<Photo>()
+
+    // 검색 기록 배열
+    private var searchHistoryList = ArrayList<SearchData>()
 
     // 어답터
     private lateinit var photoGridRecyclerViewAdapter: PhotoGridRecyclerViewAdapter
@@ -50,8 +58,12 @@ class PhotoCollectionActivity: AppCompatActivity(),
         photoList = bundle?.getSerializable("photo_array_list") as ArrayList<Photo>
 
 
+
+
+
+
         search_history_mode_switch.setOnCheckedChangeListener(this)
-        clear_search_history_button.setOnClickListener(this)
+        clear_search_history_buttton.setOnClickListener(this)
 
         top_app_bar.title = searchTerm
 
@@ -69,6 +81,11 @@ class PhotoCollectionActivity: AppCompatActivity(),
             false)
         my_photo_recycler_view.adapter = this.photoGridRecyclerViewAdapter
 
+        // 저장된 검색 기록 가져오기
+        this.searchHistoryList = SharedPrefManager.getSearchHistoryList() as ArrayList<SearchData>
+
+        this.searchHistoryList.forEach {
+        }
 
     } //
 
@@ -118,10 +135,21 @@ class PhotoCollectionActivity: AppCompatActivity(),
     // 검색버튼이 클릭되었을때
     override fun onQueryTextSubmit(query: String?): Boolean {
 
-
         if(!query.isNullOrEmpty()){
             this.top_app_bar.title = query
+
+            //TODO:: api 호출
+            //TODO:: 검색어 저장
+
+            val newSearchData = SearchData(term = query, timestamp = Date().toString())
+
+            this.searchHistoryList.add(newSearchData)
+
+            SharedPrefManager.storeSearchHistoryList(this.searchHistoryList)
         }
+
+//        this.mySearchView.setQuery("", false)
+//        this.mySearchView.clearFocus()
 
         this.top_app_bar.collapseActionView()
 
@@ -129,6 +157,7 @@ class PhotoCollectionActivity: AppCompatActivity(),
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
+
 
 //        val userInputText = newText ?: ""
 
@@ -159,7 +188,8 @@ class PhotoCollectionActivity: AppCompatActivity(),
 
     override fun onClick(view: View?) {
         when(view){
-            clear_search_history_button -> {
+            clear_search_history_buttton -> {
+
             }
         }
     }

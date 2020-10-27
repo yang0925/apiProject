@@ -1,15 +1,12 @@
-package com.example.apiproject
+package com.example.apiproject.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.example.apiproject.model.Photo
+import com.example.apiproject.R
 import com.example.apiproject.retrofit.RetrofitManager
 import com.example.apiproject.utils.Constants.TAG
 import com.example.apiproject.utils.RESPONSE_STATE
@@ -17,7 +14,6 @@ import com.example.apiproject.utils.SEARCH_TYPE
 import com.example.apiproject.utils.onMyTextChanged
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_button_search.*
-import okhttp3.internal.http2.Header.Companion.RESPONSE_STATUS
 
 class MainActivity : AppCompatActivity() {
 
