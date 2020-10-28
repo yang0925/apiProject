@@ -61,7 +61,7 @@ dependencies {
     // Rx
     // rx 자바 - 메인
     implementation "io.reactivex.rxjava3:rxjava:3.0.6"
-    
+
     // rx 코틀린 - 추가
     implementation "io.reactivex.rxjava3:rxkotlin:3.0.0"
 
@@ -70,4 +70,8 @@ dependencies {
 
     // rx 바인딩
     implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
+
+    // 코루틴
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0'
 }

@@ -22,6 +22,7 @@ import com.example.apiproject.recyclerview.SearchHistoryRecyclerView
 import com.example.apiproject.recyclerview.SearchHistoryRecyclerViewAdapter
 import com.example.apiproject.retrofit.RetrofitManager
 import com.example.apiproject.utils.SharedPrefManager
+import com.example.apiproject.utils.textChangesToFlow
 import com.example.apiproject.utils.toSimpleString
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.core.Scheduler
@@ -30,9 +31,14 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_photo_collection.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+import kotlin.coroutines.CoroutineContext
 
 
 class PhotoCollectionActivity: AppCompatActivity(),
@@ -60,7 +66,12 @@ class PhotoCollectionActivity: AppCompatActivity(),
     // 서치뷰 에딧 텍스트
     private lateinit var mySearchViewEditText: EditText
 
-    private var myCompositeDisposable = CompositeDisposable()
+
+    //private var myCompositeDisposable = CompositeDisposable()
+
+    private var myCoroutineJob : Job = Job()
+    private val myCoroutineContext: CoroutineContext
+        get() = Dispatchers.IO + myCoroutineJob
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,7 +121,8 @@ class PhotoCollectionActivity: AppCompatActivity(),
     } //
 
     override fun onDestroy() {
-        this.myCompositeDisposable.clear()
+        //this.myCompositeDisposable.clear()
+        myCoroutineContext.cancel()
         super.onDestroy()
     }
 
@@ -178,6 +190,7 @@ class PhotoCollectionActivity: AppCompatActivity(),
             // 서치뷰에서 에딧텍스트를 가져온다.
             mySearchViewEditText = this.findViewById(androidx.appcompat.R.id.search_src_text)
 
+            /*
             val editTextChangeObservable = mySearchViewEditText.textChanges()
             val searchEditTextSubscription : Disposable =
                 editTextChangeObservable
@@ -196,7 +209,19 @@ class PhotoCollectionActivity: AppCompatActivity(),
 
                         }
                     )
-            myCompositeDisposable.add(searchEditTextSubscription)
+            myCompositeDisposable.add(searchEditTextSubscription)*/
+
+            GlobalScope.launch(context = myCoroutineContext) {
+                val editTextFlow = mySearchViewEditText.textChangesToFlow()
+                editTextFlow
+                    .debounce(2000)
+                    .filter {
+                        it?.length!! > 0
+                    }
+                    .onEach {
+
+                    }.launchIn(this)
+            }
         }
 
 
