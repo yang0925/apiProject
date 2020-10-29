@@ -1,32 +1,42 @@
 # apiProject
-  API 통신을 이용한 사진 검색 앱 만들기 
+  <h2>🔎 API 통신을 이용한 사진 검색 앱 만들기</h2>
   
-  ✔Retrofit + okhttp
+  <h2>❗ 기능</h2>
   
-  ✔Shared Prefrence
+  ✔ Retrofit + okhttp
   
-  ✔RxJava
+  ✔ Shared Prefrence
   
-  ✔coroutine
-   
-    
+  ✔ RxJava
+  
+  ✔ coroutine
+  
+
+  <h2>🛠 사용툴/언어</h2>
+
+  ◾ Kotlin
+
+  ◾ Android Studio
  
-  🔁개발 순서
+ 
+  <h2>🔁개발 순서</h2>
   
-  ◾material theme, extension(UI 작업)
+  ◾ material theme, extension(UI 작업)
   
-  ◾Retrofit
+  ◾ Retrofit
   
-  ◾grid recyclerview
+  ◾ grid recyclerview
   
-  ◾searchView
+  ◾ searchView
   
-  ◾shared preference manager
+  ◾ shared preference manager
   
-  ◾latest searchterm feature(최근 검색어 저장)
+  ◾ latest searchterm feature(최근 검색어 저장)
   
-  ◾RxJava
+  ◾ RxJava
   
-  ◾coroutine flow
+  ◾ coroutine flow
+  
+  <h2>▶ 시연</h2>
  
   
